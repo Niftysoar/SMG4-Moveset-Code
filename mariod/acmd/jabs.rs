@@ -57,24 +57,24 @@ unsafe extern "C" fn sound_attack12(agent: &mut L2CAgentBase) {
 // JAB 3
 // ********************
 unsafe extern "C" fn game_attack13(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 4.0);
+    frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("head"), 4.0, 361, 60, 0, 60, 3.0, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_HEAD);  
     }
-    frame(agent.lua_state_agent, 10.0);
+    frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
 }
 unsafe extern "C" fn effect_attack13(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 3.0);
+    frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 6, 8, 0, -45, -90, 0.6, false);
     }
 }
 unsafe extern "C" fn sound_attack13(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 4.0);
+    frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_l"));
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_mariod_rnd_attack"));

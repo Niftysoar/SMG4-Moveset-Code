@@ -13,6 +13,7 @@ use {
 use smashline::Priority::*;
 
 mod acmd;
+mod drcapsule;
 
 //Fighter Frame
 
@@ -23,7 +24,7 @@ unsafe extern "C" fn mariod_frame(fighter: &mut L2CFighterCommon) {
         
         if crate::MARKED_COLORS[color as usize] {
    
-            if motion == hash40("throw_f") {
+            if motion == hash40("throw_f") || motion == hash40("attack_air_b") {
                 if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
                     macros::PLAY_SE(fighter, Hash40::new("se_mariod_appeal_s03"));
                 }
@@ -35,6 +36,7 @@ unsafe extern "C" fn mariod_frame(fighter: &mut L2CFighterCommon) {
 pub fn install() {
 
     acmd::install();
+    drcapsule::install();
 
     Agent::new("mariod")
         //fighter frame
