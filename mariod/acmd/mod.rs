@@ -1,6 +1,6 @@
 mod throw;
 mod areals;
-// mod specials;
+mod specials;
 mod tilts;
 mod jabs;
 mod smashes;
@@ -12,7 +12,7 @@ mod other;
 pub fn install() {
     throw::install();
     areals::install();
-    // specials::install();
+    specials::install();
     tilts::install();
     jabs::install();
     smashes::install();

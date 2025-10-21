@@ -16,18 +16,31 @@ use super::*;
 unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
 
-    // Roll a random value once per projectile
-    let rng = sv_math::rand(hash40("rng"), 7); // 0–6 (7 different effects)
-    
+    // First roll for the super rare insta-kill (1/100 chance)
+    let rare_roll = sv_math::rand(hash40("rng"), 100); // 0–99
+    let rng = if rare_roll == 0 {
+        99 // special code for insta kill
+    } else {
+        sv_math::rand(hash40("rng"), 6) // 0–5 (6 regular effects)
+    };
+
     // store chosen attributes before the attacks
     let (dmg, angle, kbg, bkb, attr, sfx) = match rng {
+        // Normal projectile
         0 => (5.0, 65, 40, 60, Hash40::new("collision_attr_normal"), *COLLISION_SOUND_ATTR_MARIOD_CAPSULE),
+        // Nothing
         1 => (0.0, 361, 0, 0, Hash40::new("collision_attr_normal"), *COLLISION_SOUND_ATTR_NONE),
-        2 => (12.0, 45, 90, 70, Hash40::new("collision_attr_fire"), *COLLISION_SOUND_ATTR_FIRE),
-        3 => (8.0, 361, 60, 50, Hash40::new("collision_attr_ice"), *COLLISION_SOUND_ATTR_FREEZE),
-        4 => (999.0, 361, 999, 999, Hash40::new("collision_attr_normal"), *COLLISION_SOUND_ATTR_BOMB),
-        5 => (5.0, 361, 60, 60, Hash40::new("collision_attr_stun"), *COLLISION_SOUND_ATTR_ELEC),
-        6 => (1.0, 361, 0, 0, Hash40::new("collision_attr_curse"), *COLLISION_SOUND_ATTR_MAGIC),
+        // Fire
+        2 => (12.0, 45, 90, 70, Hash40::new("collision_attr_fire"), *COLLISION_SOUND_ATTR_MARIOD_CAPSULE),
+        // Ice
+        3 => (8.0, 361, 60, 50, Hash40::new("collision_attr_ice"), *COLLISION_SOUND_ATTR_MARIOD_CAPSULE),
+        // Dizzy
+        4 => (5.0, 361, 60, 60, Hash40::new("collision_attr_paralyze"), *COLLISION_SOUND_ATTR_ELEC),
+        // Flip
+        5 => (1.0, 361, 0, 0, Hash40::new("collision_attr_turn"), *COLLISION_SOUND_ATTR_MARIOD_MANT),
+        // Insta-kill (rare)
+        99 => (999.0, 361, 999, 999, Hash40::new("collision_attr_normal"), *COLLISION_SOUND_ATTR_BAT),
+        // Fallback
         _ => (5.0, 65, 40, 60, Hash40::new("collision_attr_normal"), *COLLISION_SOUND_ATTR_MARIOD_CAPSULE),
     };
 
