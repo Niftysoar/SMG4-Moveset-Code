@@ -134,23 +134,24 @@ unsafe extern "C" fn effect_throwlw(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn sound_throwlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("vc_mariod_010"));
+        macros::PLAY_SE(agent, Hash40::new("se_mariod_throw_b01"));
     }
 }
 
 pub fn install() {
     Agent::new("mariod")
-        .acmd("game_throwfsmg4", game_throwf, Priority::Low)
-        .acmd("sound_throwfsmg4", sound_throwf, Priority::Low)
-        .acmd("effect_throwfsmg4",effect_throwf,Priority::Low)
+    .set_costume([112, 113, 114, 115, 116, 117, 118, 119].to_vec())
+        .acmd("game_throwf", game_throwf, High)
+        .acmd("sound_throwf", sound_throwf, High)
+        .acmd("effect_throwf", effect_throwf,High)
 
-        .acmd("game_throwhismg4", game_throwhi, Priority::Low)
-        .acmd("sound_throwhismg4", sound_throwhi, Priority::Low)
-        .acmd("effect_throwhismg4",effect_throwhi,Priority::Low)
+        .acmd("game_throwhi", game_throwhi, High)
+        .acmd("sound_throwhi", sound_throwhi, High)
+        .acmd("effect_throwhi", effect_throwhi, High)
 
-        .acmd("game_throwlwsmg4", game_throwlw, Priority::Low)
-        .acmd("sound_throwlwsmg4", sound_throwlw, Priority::Low)
-        .acmd("effect_throwlwsmg4",effect_throwlw,Priority::Low)
+        .acmd("game_throwlw", game_throwlw, High)
+        .acmd("sound_throwlw", sound_throwlw, High)
+        .acmd("effect_throwlw", effect_throwlw, High)
 
         .install();
 }

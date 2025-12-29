@@ -40,14 +40,15 @@ unsafe extern "C" fn sound_appeallwr(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     Agent::new("mariod")
-        .sound_acmd("sound_entryrsmg4", sound_entryr, Priority::Low)  
-        .sound_acmd("sound_entrylsmg4", sound_entryr, Priority::Low) 
+    .set_costume([112, 113, 114, 115, 116, 117, 118, 119].to_vec())
+        .sound_acmd("sound_entryr", sound_entryr, Priority::Low)  
+        .sound_acmd("sound_entryl", sound_entryr, Priority::Low) 
         
-        .sound_acmd("sound_appealsrsmg4", sound_appealsr, Priority::Low)
-        .sound_acmd("sound_appealslsmg4", sound_appealsr, Priority::Low)
+        .sound_acmd("sound_appealsr", sound_appealsr, Priority::Low)
+        .sound_acmd("sound_appealsl", sound_appealsr, Priority::Low)
 
-        .sound_acmd("sound_appeallwrsmg4", sound_appeallwr, Priority::Low)
-        .sound_acmd("sound_appeallwlsmg4", sound_appeallwr, Priority::Low)
+        .sound_acmd("sound_appeallwr", sound_appeallwr, Priority::Low)
+        .sound_acmd("sound_appeallwl", sound_appeallwr, Priority::Low)
 
         .install();
 }

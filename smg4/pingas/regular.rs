@@ -14,7 +14,6 @@ use smashline::Priority::*;
 use super::*;
 
 unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
-    let lua_state = agent.lua_state_agent;
 
     // First roll for the super rare insta-kill (1/100 chance)
     let rare_roll = sv_math::rand(hash40("rng"), 100); // 0–99
@@ -57,7 +56,7 @@ unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
     // Reapply hitbox, slightly weaker
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), (dmg * 0.8), angle as u64, kbg as u64, 0, (bkb - 5),
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), dmg * 0.8, angle as u64, kbg as u64, 0, bkb - 5,
             1.7, 0.0, 1.7, 0.0, Some(0.0), Some(-1.7), Some(0.0), 1.0, 1.0,
             *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.5, 0.0, 0,
             true, false, false, false, false,
@@ -67,7 +66,7 @@ unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
 
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), (dmg * 0.6), angle as u64, kbg as u64, 0, (bkb - 10),
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), dmg * 0.6, angle as u64, kbg as u64, 0, bkb - 10,
             1.7, 0.0, 1.7, 0.0, Some(0.0), Some(-1.7), Some(0.0), 1.0, 1.0,
             *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.0, 0.0, 0,
             true, false, false, false, false,
@@ -78,7 +77,8 @@ unsafe extern "C" fn game_regular(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     Agent::new("mariod_drcapsule")
-        .acmd("game_regularsmg4", game_regular, Priority::Low)
+    .set_costume([112, 113, 114, 115, 116, 117, 118, 119].to_vec())
+        .acmd("game_regularsmg4", game_regular, High)
 
         .install();
 }

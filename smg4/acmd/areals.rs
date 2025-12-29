@@ -17,53 +17,39 @@ use super::*;
 // N Air
 // ********************
 unsafe extern "C" fn game_attackairn(fighter: &mut L2CAgentBase) {
-    // Enable landing
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-
-    // Function to spawn a hitbox
-    let nair_hit = |fighter: &mut L2CAgentBase| {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.5, 75, 95, 0, 80, 11.0,
-            0.0, 6.8, 0.0, None, None, None,
-            1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS,
-            false, 0, 0.0, 0, false, false, false, false,
-            true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL,
-            *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"),
-            *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-    };
-
-    // Three bursts
-    for &(start_frame, clear_frame) in &[(5.0, 15.0), (16.0, 25.0), (30.0, 45.0)] {
-        frame(fighter.lua_state_agent, start_frame);
-        if macros::is_excute(fighter) {
-            nair_hit(fighter);
-        }
-        frame(fighter.lua_state_agent, clear_frame);
-        if macros::is_excute(fighter) {
-            AttackModule::clear_all(fighter.module_accessor);
-        }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.5, 75, 95, 0, 80, 11.0, 0.0, 6.8, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
-
-    // Disable landing
+    frame(fighter.lua_state_agent, 45.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
 
+unsafe extern "C" fn effect_attackairn(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("mariod_smash_impact"), Hash40::new("hip"), 2.0, 0.0, 0.0, 0, 0, 0, 1.2, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 1.0, 1.0, 1.0);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 1.0);
+        macros::LAST_EFFECT_SET_RATE(agent, 0.5);
+    }
+    frame(agent.lua_state_agent, 50.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_OFF_KIND(agent, Hash40::new("mariod_smash_impact"), true, true);
+    }
 }
+
 unsafe extern "C" fn sound_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_mariod_appeal_s02"));
-    }
-    frame(agent.lua_state_agent, 16.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_mariod_appeal_s02"));
-    }
-    frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_mariod_appeal_s02"));
     }
@@ -82,7 +68,7 @@ unsafe extern "C" fn game_attackairf(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("kneer"), 8.0, 361, 70, 0, 30, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 2, 0, Hash40::new("footr"), 8.0, 361, 70, 0, 30, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
-    frame(fighter.lua_state_agent, 30.0);
+    frame(fighter.lua_state_agent, 27.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -210,7 +196,6 @@ unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
 // D Air
 // ********************
 unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         WorkModule::on_flag(fighter.module_accessor, /*Flag*/ *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -248,7 +233,6 @@ unsafe extern "C" fn game_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("haver"), 0, 6.0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, true);
     }
@@ -262,7 +246,6 @@ unsafe extern "C" fn effect_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 unsafe extern "C" fn sound_attackairlw(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_swing_06"));
@@ -278,7 +261,6 @@ unsafe extern "C" fn sound_attackairlw(fighter: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_landingairlw(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
@@ -290,7 +272,6 @@ unsafe extern "C" fn game_landingairlw(fighter: &mut L2CAgentBase) {
     }
 }
 unsafe extern "C" fn sound_landingairlw(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_murabito_attackhard_l01"));
     }
@@ -299,27 +280,29 @@ unsafe extern "C" fn sound_landingairlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     Agent::new("mariod")
-        .game_acmd("game_attackairnsmg4", game_attackairn, High)
-        .effect_acmd("effect_attackairnsmg4", effect_attackairn, High)
-        .sound_acmd("sound_attackairnsmg4", sound_attackairn, High)
+    .set_costume([112, 113, 114, 115, 116, 117, 118, 119].to_vec())
+        .game_acmd("game_attackairn", game_attackairn, High)
+        .effect_acmd("effect_attackairn", effect_attackairn, High)
+        .sound_acmd("sound_attackairn", sound_attackairn, High)
 
-        .game_acmd("game_attackairfsmg4", game_attackairf, High)
-        .effect_acmd("effect_attackairfsmg4", effect_attackairf, High)
-        .sound_acmd("sound_attackairfsmg4", sound_attackairf, High)  
+        .game_acmd("game_attackairf", game_attackairf, High)
+        .effect_acmd("effect_attackairf", effect_attackairf, High)
+        .sound_acmd("sound_attackairf", sound_attackairf, High)  
 
-        .game_acmd("game_attackairhismg4", game_attackairhi, High)
-        .effect_acmd("effect_attackairhismg4", effect_attackairhi, High)
-        .sound_acmd("sound_attackairhismg4", sound_attackairhi, High)
+        .game_acmd("game_attackairhi", game_attackairhi, High)
+        .effect_acmd("effect_attackairhi", effect_attackairhi, High)
+        .sound_acmd("sound_attackairhi", sound_attackairhi, High)
+        .expression_acmd("expression_attackairhi", expression_attackairhi, High)
 
-        .game_acmd("game_attackairbsmg4", game_attackairb, High)
-        .effect_acmd("effect_attackairbsmg4", effect_attackairb, High)
-        .sound_acmd("sound_attackairbsmg4", sound_attackairb, High)
+        .game_acmd("game_attackairb", game_attackairb, High)
+        .effect_acmd("effect_attackairb", effect_attackairb, High)
+        .sound_acmd("sound_attackairb", sound_attackairb, High)
 
-        .game_acmd("game_attackairlwsmg4", game_attackairlw, High)    
-        .effect_acmd("effect_attackairlwsmg4", effect_attackairlw, High)  
-        .sound_acmd("sound_attackairlwsmg4", sound_attackairlw, High)  
-        .game_acmd("game_landingairlwsmg4", game_landingairlw, High) 
-        .sound_acmd("sound_landingairlwsmg4", sound_landingairlw, High) 
+        .game_acmd("game_attackairlw", game_attackairlw, High)    
+        .effect_acmd("effect_attackairlw", effect_attackairlw, High)  
+        .sound_acmd("sound_attackairlw", sound_attackairlw, High)  
+        .game_acmd("game_landingairlw", game_landingairlw, High) 
+        .sound_acmd("sound_landingairlw", sound_landingairlw, High) 
 
         .install();
 }
