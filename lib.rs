@@ -3,15 +3,24 @@
     proc_macro_hygiene
 )]
 #![allow(
-    unused_macros
+    non_snake_case,
+    unused
 )]
+#![allow(warnings)]
+#![deny(
+    deprecated
+)]
+
+#[macro_use]
+// extern crate lazy_static;
 
 use std::collections::HashMap;
 use smash::hash40;
 use csk::*;
 use param_config::*;
 use smash::lib::lua_const::{FIGHTER_KIND_MARIOD};
-use smash::lib::lua_const::WEAPON_KIND_KOOPAJR_CANNONBALL;
+
+pub mod imports;
 
 mod smg4;
 
@@ -159,5 +168,4 @@ pub fn main() {
     }
 
     smg4::install();
-    // smashline::clone_weapon("koopajr", *WEAPON_KIND_KOOPAJR_CANNONBALL, "mariod", "waluauncher", true);
 }

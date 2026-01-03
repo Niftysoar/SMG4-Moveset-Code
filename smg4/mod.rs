@@ -17,7 +17,13 @@ mod pingas;
 mod frame;
 mod status;
 
-pub const FIGHTER_SMG4_GENERATE_ARTICLE_WALUAUNCHER: i32 = 6;
+const DECOY_KIND: smash::lib::LuaConst = WEAPON_KIND_MIISWORDSMAN_CHAKRAM;
+const DECOY_ORIGIN: &str = "miiswordsman";
+const MARIOD_GENERATE_LAST: i32 = 5;
+
+pub static mut FIGHTER_MARIO_GENERATE_ARTICLE_DECOY: i32 = 0;
+pub const DECOY_STATUS_HAVED: i32 = 0;
+pub const DECOY_STATUS_FLY: i32 = 2;
 
 pub fn install() {
 

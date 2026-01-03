@@ -13,6 +13,9 @@ use {
 use smashline::Priority::*;
 use super::*;
 
+use crate::imports::imports_agent::*;
+use crate::imports::imports_acmd::*;
+
 unsafe extern "C" fn game_specialhi(agent: &mut L2CAgentBase) {
     let lua_state = agent.lua_state_agent;
 
@@ -69,45 +72,42 @@ unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 2.0);
+    frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 10);
+        println!("[smashline_smg4::special_lw] spawn {}",FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
+        ArticleModule::generate_article(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, false, -1);
     }
-    frame(agent.lua_state_agent, 8.0);
+    frame(agent.lua_state_agent, 78.0);
     if macros::is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_RISE);
+        ArticleModule::change_status_exist(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, DECOY_STATUS_FLY);
+        //ArticleModule::shoot_exist(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
-    frame(agent.lua_state_agent, 10.0);
+}
+unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
+}
+unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
+}
+
+unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
-    for _ in 0..6 {
+}
+
+unsafe extern "C" fn game_speciallwblank(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 4, 0, Hash40::new("top"), 1.6, 90, 100, 80, 0, 4.0, 0.0, 3.2, 0.0, None, None, None, 0.5, 1.2, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 1.6, 105, 100, 45, 0, 4.5, 0.0, 9.0, -6.5, None, None, None, 0.5, 1.2, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        macros::ATTACK(agent, 3, 0, Hash40::new("top"), 1.6, 367, 100, 15, 0, 4.5, 0.0, 9.0, -6.5, None, None, None, 0.5, 1.2, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.6, 105, 100, 45, 0, 4.5, 0.0, 9.0, 6.5, None, None, None, 0.5, 1.2, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 1.6, 367, 100, 15, 0, 4.5, 0.0, 9.0, 6.5, None, None, None, 0.5, 1.2, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        println!("[smashline_smg4::special_lw] nothing to spawn");
     }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-    }
-    wait(agent.lua_state_agent, 3.0);
-    }
-    if macros::is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_LIMIT_X_DEC);
-        WorkModule::off_flag(agent.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_RISE);
-    }
-    frame(agent.lua_state_agent, 40.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 45, 154, 0, 80, 6.5, 0.0, 12.0, 6.0, Some(0.0), Some(12.0), Some(-6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 45, 154, 0, 80, 6.0, 0.0, 4.0, 2.5, Some(0.0), Some(4.0), Some(-2.5), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-    }
-    wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-    }
+    macros::FT_MOTION_RATE_RANGE(agent,1.0,78.0,1.0);
+    frame(agent.lua_state_agent, 78.0);
+    macros::FT_MOTION_RATE(agent,1.0);
+}
+unsafe extern "C" fn effect_speciallwblank(agent: &mut L2CAgentBase) {
+}
+unsafe extern "C" fn sound_speciallwblank(agent: &mut L2CAgentBase) {
+}
+unsafe extern "C" fn expression_speciallwblank(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
@@ -120,7 +120,22 @@ pub fn install() {
         .effect_acmd("effect_specialairhi", effect_specialhi, High)
         .sound_acmd("sound_specialairhi", sound_specialhi, High)
 
-        // .game_acmd("game_speciallw", game_speciallw, High)
+        .game_acmd("game_speciallw", game_speciallw, High)
+        .game_acmd("game_specialairlw", game_speciallw, High)
+        .effect_acmd("effect_speciallw", effect_speciallw, High)
+        .effect_acmd("effect_specialairlw", effect_speciallw, High)
+        .sound_acmd("sound_speciallw", sound_speciallw, High)
+        .sound_acmd("sound_specialairlw", sound_speciallw, High)
+        .expression_acmd("expression_speciallw", expression_speciallw, High)
+        .expression_acmd("expression_specialairlw", expression_speciallw, High)
+        .game_acmd("game_speciallwblank", game_speciallwblank, High)
+        .game_acmd("game_specialairlwblank", game_speciallwblank, High)
+        .effect_acmd("effect_speciallwblank", effect_speciallwblank, High)
+        .effect_acmd("effect_specialairlwblank", effect_speciallwblank, High)
+        .sound_acmd("sound_speciallwblank", sound_speciallwblank, High)
+        .sound_acmd("sound_specialairlwblank", sound_speciallwblank, High)
+        .expression_acmd("expression_speciallwblank", expression_speciallwblank, High)
+        .expression_acmd("expression_specialairlwblank", expression_speciallwblank, High)
 
         .install();
 }
