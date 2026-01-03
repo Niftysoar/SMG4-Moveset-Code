@@ -93,7 +93,7 @@ pub unsafe extern "C" fn fly_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
 pub unsafe extern "C" fn fly_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let prev_status = StatusModule::prev_status_kind(weapon.module_accessor, 0);
-    if prev_status == super::DECOY_STATUS_FLY {
+    if prev_status == crate::smg4::DECOY_STATUS_FLY {
         return 0.into();
     }
 
@@ -122,6 +122,9 @@ pub unsafe extern "C" fn fly_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     */
     PostureModule::set_lr(weapon.module_accessor, lr);
     PostureModule::update_rot_y_lr(weapon.module_accessor);
+    let rot_y = PostureModule::rot_y(weapon.module_accessor, 0);
+    let rot_z = if lr > 0.0 {-90.0} else {90.0};
+    PostureModule::set_rot(weapon.module_accessor, &Vector3f{x: 0.0, y: rot_y, z: rot_z}, 0);
 
     /*
     SET SPEED
@@ -160,7 +163,6 @@ unsafe extern "C" fn fly_main_status_loop(weapon: &mut smashline::L2CWeaponCommo
        WorkModule::set_int(weapon.module_accessor, 1, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
     }
     if WorkModule::count_down_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE, 0) {
-        println!("BURST");
         return fly_burst(weapon);
     }
 
@@ -184,15 +186,15 @@ pub fn install() {
     agent.acmd("effect_burst", effect_burst, Priority::Default);
     agent.acmd("sound_burst", sound_burst, Priority::Default);
 
-    agent.status(Pre, super::DECOY_STATUS_HAVED, haved_pre);
-    agent.status(Init, super::DECOY_STATUS_HAVED, empty_status);
-    agent.status(Main, super::DECOY_STATUS_HAVED, haved_main);
-    agent.status(End, super::DECOY_STATUS_HAVED, empty_status);
+    agent.status(Pre, crate::smg4::DECOY_STATUS_HAVED, haved_pre);
+    agent.status(Init, crate::smg4::DECOY_STATUS_HAVED, empty_status);
+    agent.status(Main, crate::smg4::DECOY_STATUS_HAVED, haved_main);
+    agent.status(End, crate::smg4::DECOY_STATUS_HAVED, empty_status);
 
-    agent.status(Pre, super::DECOY_STATUS_FLY, fly_pre);
-    agent.status(Init, super::DECOY_STATUS_FLY, fly_init);
-    agent.status(Main, super::DECOY_STATUS_FLY, fly_main);
-    agent.status(End, super::DECOY_STATUS_FLY, empty_status);
+    agent.status(Pre, crate::smg4::DECOY_STATUS_FLY, fly_pre);
+    agent.status(Init, crate::smg4::DECOY_STATUS_FLY, fly_init);
+    agent.status(Main, crate::smg4::DECOY_STATUS_FLY, fly_main);
+    agent.status(End, crate::smg4::DECOY_STATUS_FLY, empty_status);
 
     agent.install();
 }

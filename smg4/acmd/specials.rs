@@ -74,12 +74,12 @@ unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
-        println!("[smashline_smg4::special_lw] spawn {}",FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
-        ArticleModule::generate_article(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, false, -1);
+        println!("[smashline_smg4::special_lw] spawn {}",crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
+        ArticleModule::generate_article(agent.module_accessor, crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, false, -1);
     }
     frame(agent.lua_state_agent, 78.0);
     if macros::is_excute(agent) {
-        ArticleModule::change_status_exist(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, DECOY_STATUS_FLY);
+        ArticleModule::change_status_exist(agent.module_accessor, crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, crate::smg4::DECOY_STATUS_FLY);
         //ArticleModule::shoot_exist(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
 }

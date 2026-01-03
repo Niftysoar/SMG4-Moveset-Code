@@ -26,6 +26,8 @@ pub const DECOY_STATUS_HAVED: i32 = 0;
 pub const DECOY_STATUS_FLY: i32 = 2;
 
 pub fn install() {
+    let decoy_id = smashline::clone_weapon(DECOY_ORIGIN, *DECOY_KIND, "mariod","decoy",true);
+    FIGHTER_MARIO_GENERATE_ARTICLE_DECOY = MARIOD_GENERATE_LAST + decoy_id;
 
     acmd::install();
     pingas::install();
