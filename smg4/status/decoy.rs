@@ -172,6 +172,7 @@ unsafe extern "C" fn fly_burst_loop(weapon: &mut smashline::L2CWeaponCommon) -> 
 
 pub fn install() {     
     let agent = &mut smashline::Agent::new("mariod_decoy");
+    agent.set_costume([112, 113, 114, 115, 116, 117, 118, 119].to_vec());
     agent.acmd("game_fly", game_fly, Priority::Default);
     agent.acmd("effect_fly", effect_fly, Priority::Default);
     
