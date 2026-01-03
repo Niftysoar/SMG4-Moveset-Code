@@ -17,13 +17,6 @@ unsafe extern "C" fn game_fly(agent: &mut L2CAgentBase) {
     }
 }
 unsafe extern "C" fn effect_fly(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    for _ in 0..i32::MAX {
-        if macros::is_excute(agent) {
-            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_screw"), Hash40::new("rot"), 0, 0, 0, 0, 0, 0, 1, true);
-        }
-        wait(agent.lua_state_agent, 6.0);
-    }
 }
 
 unsafe extern "C" fn game_burst(agent: &mut L2CAgentBase) {

@@ -8,4 +8,5 @@ mod decoy;
 pub fn install() {    
     pingas::install();
     special_lw::install();
+    decoy::install();
 }
