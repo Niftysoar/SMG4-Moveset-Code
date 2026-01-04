@@ -57,7 +57,7 @@ unsafe extern "C" fn special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_blank = ArticleModule::is_exist(fighter.module_accessor, super::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
+    let is_blank = ArticleModule::is_exist(fighter.module_accessor, crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
 
     let mot_g = if !is_blank {hash40("special_lw")} else {hash40("special_lw_blank")};
     let mot_a = if !is_blank {hash40("special_air_lw")} else {hash40("special_air_lw_blank")};
@@ -101,8 +101,7 @@ unsafe extern "C" fn special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 pub fn install() {
     Agent::new("mariod")
     .set_costume([112, 113, 114, 115, 116, 117, 118, 119].to_vec())
-
-        .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
-        .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
-        .install();
+    .status(Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_pre)
+    .status(Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, special_lw_main)
+    .install();
 }

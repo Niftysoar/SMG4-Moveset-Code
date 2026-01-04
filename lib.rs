@@ -22,7 +22,7 @@ use smash::lib::lua_const::{FIGHTER_KIND_MARIOD};
 
 pub mod imports;
 
-mod smg4;
+pub mod smg4;
 
 pub static mut MARKED_COLORS: [bool; 256] = [false; 256];
 
@@ -154,7 +154,7 @@ extern "C" fn mods_mounted(_ev: arcropolis_api::Event) {
 
 }
 
-#[skyline::main(name = "smashline_test")]
+#[skyline::main(name = "smashline_smg4")]
 pub fn main() {
 
     unsafe {

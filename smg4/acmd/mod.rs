@@ -1,6 +1,3 @@
-use crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY;
-use crate::smg4::DECOY_STATUS_FLY;
-
 mod throw;
 mod areals;
 mod specials;
