@@ -1,14 +1,9 @@
-use crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY;
-use crate::smg4::DECOY_STATUS_FLY;
-
 mod throw;
 mod areals;
 mod specials;
 mod tilts;
-mod jabs;
 mod smashes;
-// mod ground;
-// mod win;
+mod ground;
 mod other;
 // mod final_smash;
 
@@ -17,10 +12,8 @@ pub fn install() {
     areals::install();
     specials::install();
     tilts::install();
-    jabs::install();
     smashes::install();
-    // ground::install();
-    // win::install();
+    ground::install();
     other::install();
     // final_smash::install();
 }

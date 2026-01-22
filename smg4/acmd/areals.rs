@@ -134,7 +134,7 @@ unsafe extern "C" fn sound_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_mariod_rnd_attack"));
-        macros::PLAY_SE(agent, Hash40::new("se_mariod_attackair_h01"));
+        macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
     }
 }
 
@@ -160,9 +160,9 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("handr"), 13.0, 361, 102, 0, 20, 5.7, 2.3, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 10.0, 361, 102, 0, 20, 3.0, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 1, 0, Hash40::new("armr"), 11.0, 361, 102, 0, 20, 3.0, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_PUNCH);
     }
-    wait(agent.lua_state_agent, 13.0);
+    wait(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
@@ -173,9 +173,14 @@ unsafe extern "C" fn game_attackairb(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attackairb(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 16.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0.0, 10.0, 0.0, 0.0, 180, 0.0, 1.1, true, *EF_FLIP_YZ);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.7);
+    }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 6, -12, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 360, true, 1.5);
+        macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("fingerr32"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 360, true, 0.85);
     }
 }
 
@@ -188,6 +193,20 @@ unsafe extern "C" fn sound_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_mariod_rnd_attack"));
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_01"));
+    }
+}
+
+unsafe extern "C" fn expression_attackairb(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 13.0);
+    if macros::is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -296,6 +315,7 @@ pub fn install() {
         .game_acmd("game_attackairb", game_attackairb, High)
         .effect_acmd("effect_attackairb", effect_attackairb, High)
         .sound_acmd("sound_attackairb", sound_attackairb, High)
+        .expression_acmd("expression_attackairb", expression_attackairb, High)
 
         .game_acmd("game_attackairlw", game_attackairlw, High)    
         .effect_acmd("effect_attackairlw", effect_attackairlw, High)  

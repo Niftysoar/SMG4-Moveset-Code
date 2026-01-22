@@ -16,8 +16,8 @@ use super::*;
 unsafe extern "C" fn mariod_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-        let color = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
-        let motion = MotionModule::motion_kind(fighter.module_accessor);
+        let color = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+        let motion = MotionModule::motion_kind(boma);
         
         if crate::MARKED_COLORS[color as usize] {
 
@@ -37,27 +37,37 @@ unsafe extern "C" fn mariod_frame(fighter: &mut L2CFighterCommon) {
             }
    
             if motion == hash40("throw_f") || motion == hash40("attack_air_b") {
-                if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
+                if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_ALL) {
                     macros::PLAY_SE(fighter, Hash40::new("se_mariod_appeal_s03"));
                 }
             }
 
-            let beeg_smg4_backthrow = motion == smash::hash40("throw_b") && MotionModule::frame(boma) >= 1.0 && MotionModule::frame(boma) <= 24.0;
+            let beeg_smg4_backthrow = motion == smash::hash40("throw_b") && MotionModule::frame(boma) >= 10.0 && MotionModule::frame(boma) <= 38.0;
             let mmmmmmmmmmmmmmmmm = (motion == hash40("special_air_hi") || motion == hash40("special_hi")) && MotionModule::frame(boma) >= 1.0 && MotionModule::frame(boma) <= 60.0;
             if beeg_smg4_backthrow {
-                // Show BEEG
-                ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("beegsmg4"), true);
+                let lr = PostureModule::lr(boma);
+
+                if lr > 0.0 {
+                    // Facing right
+                    ModelModule::set_mesh_visibility(boma, Hash40::new("beegsmg4r"), true);
+                    ModelModule::set_mesh_visibility(boma, Hash40::new("beegsmg4l"), false);
+                } else {
+                    // Facing left
+                    ModelModule::set_mesh_visibility(boma, Hash40::new("beegsmg4l"), true);
+                    ModelModule::set_mesh_visibility(boma, Hash40::new("beegsmg4r"), false);
+                }
             } else {
-                // Hide BEEG
-                ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("beegsmg4"), false);
+                // Hide both when not in back throw window
+                ModelModule::set_mesh_visibility(boma, Hash40::new("beegsmg4r"), false);
+                ModelModule::set_mesh_visibility(boma, Hash40::new("beegsmg4l"), false);
             }
 
             if mmmmmmmmmmmmmmmmm {
                 // Show MarioTT
-                ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("mariott"), true);
+                ModelModule::set_mesh_visibility(boma, Hash40::new("mariott"), true);
             } else {
                 // Hide MarioTT
-                ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("mariott"), false);
+                ModelModule::set_mesh_visibility(boma, Hash40::new("mariott"), false);
             }
 
             if GroundModule::can_entry_cliff(boma) == 1 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_COUNT) < 7 && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME) < 1 && ControlModule::get_stick_y(boma) > -0.5{

@@ -72,20 +72,58 @@ unsafe extern "C" fn sound_specialhi(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 18.0);
+    frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
-        println!("[smashline_smg4::special_lw] spawn {}",FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
-        ArticleModule::generate_article(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, false, -1);
+        println!("[smashline_smg4::special_lw] spawn {}",crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
+        ArticleModule::generate_article(agent.module_accessor, crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, false, -1);
     }
-    frame(agent.lua_state_agent, 78.0);
+    frame(agent.lua_state_agent, 37.0);
     if macros::is_excute(agent) {
-        ArticleModule::change_status_exist(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, DECOY_STATUS_FLY);
-        //ArticleModule::shoot_exist(agent.module_accessor, FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+        ArticleModule::change_status_exist(agent.module_accessor, crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, crate::smg4::DECOY_STATUS_FLY);
     }
 }
+
 unsafe extern "C" fn effect_speciallw(agent: &mut L2CAgentBase) {
+    let situation_kind = StatusModule::situation_kind(agent.module_accessor);
+    let facing_right = PostureModule::lr(agent.module_accessor) > 0.0;
+
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("top"), 6, 11, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 36.0);
+    if macros::is_excute(agent) {
+        // fire burst direction
+        let yaw = if facing_right { 45.0 } else { -45.0 };
+
+        if situation_kind == *SITUATION_KIND_GROUND {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, true);
+            macros::LAST_EFFECT_SET_COLOR(agent, 0.2, 0.2, 0.2);
+        }
+    }
+    frame(agent.lua_state_agent, 37.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_flame"), Hash40::new("havel"), 1.0, 0, 0, 0, 0, 0, 0.5, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_bomb_a"), Hash40::new("handl"), 1.0, 0, 0, 0, 0, 0, 0.25, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.2);
+        EffectModule::enable_sync_init_pos_last(agent.module_accessor);
+    }
 }
+
 unsafe extern "C" fn sound_speciallw(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_mariod_special_l01"));
+    }
+    frame(agent.lua_state_agent, 20.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_mariod_009"));
+    }
+    frame(agent.lua_state_agent, 38.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_mariod_special_l02"));
+        macros::PLAY_SE(agent, Hash40::new("se_common_bomb_l"));
+    }
 }
 
 unsafe extern "C" fn expression_speciallw(agent: &mut L2CAgentBase) {
@@ -99,16 +137,13 @@ unsafe extern "C" fn game_speciallwblank(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         println!("[smashline_smg4::special_lw] nothing to spawn");
     }
-    macros::FT_MOTION_RATE_RANGE(agent,1.0,78.0,1.0);
-    frame(agent.lua_state_agent, 78.0);
-    macros::FT_MOTION_RATE(agent,1.0);
 }
-unsafe extern "C" fn effect_speciallwblank(agent: &mut L2CAgentBase) {
-}
-unsafe extern "C" fn sound_speciallwblank(agent: &mut L2CAgentBase) {
-}
-unsafe extern "C" fn expression_speciallwblank(agent: &mut L2CAgentBase) {
-}
+
+unsafe extern "C" fn effect_speciallwblank(agent: &mut L2CAgentBase) {}
+
+unsafe extern "C" fn sound_speciallwblank(agent: &mut L2CAgentBase) {}
+
+unsafe extern "C" fn expression_speciallwblank(agent: &mut L2CAgentBase) {}
 
 pub fn install() {
     Agent::new("mariod")
