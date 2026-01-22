@@ -76,6 +76,8 @@ unsafe extern "C" fn game_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         println!("[smashline_smg4::special_lw] spawn {}",crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
         ArticleModule::generate_article(agent.module_accessor, crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, false, -1);
+        println!("[smashline_smg4::special_lw] spawn {}",crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY);
+        ArticleModule::generate_article(agent.module_accessor, crate::smg4::FIGHTER_MARIO_GENERATE_ARTICLE_DECOY, false, -1);
     }
     frame(agent.lua_state_agent, 37.0);
     if macros::is_excute(agent) {
