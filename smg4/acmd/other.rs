@@ -56,7 +56,12 @@ unsafe extern "C" fn game_win2(agent: &mut L2CAgentBase) {}
 
 unsafe extern "C" fn effect_win2(agent: &mut L2CAgentBase) {}
 
-unsafe extern "C" fn sound_win2(agent: &mut L2CAgentBase) {}
+unsafe extern "C" fn sound_win2(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 70.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE_NO_3D(agent, Hash40::new("vc_mariod_win02_02"));
+    }
+}
 
 unsafe extern "C" fn game_win2wait(agent: &mut L2CAgentBase) {}
 

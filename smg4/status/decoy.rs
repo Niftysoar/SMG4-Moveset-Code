@@ -86,7 +86,6 @@ pub unsafe extern "C" fn fly_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
 pub unsafe extern "C" fn fly_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let prev_status = StatusModule::prev_status_kind(weapon.module_accessor, 0);
     if prev_status == crate::smg4::DECOY_STATUS_FLY {
-    if prev_status == crate::smg4::DECOY_STATUS_FLY {
         return 0.into();
     }
 
@@ -115,9 +114,6 @@ pub unsafe extern "C" fn fly_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     */
     PostureModule::set_lr(weapon.module_accessor, lr);
     PostureModule::update_rot_y_lr(weapon.module_accessor);
-    let rot_y = PostureModule::rot_y(weapon.module_accessor, 0);
-    let rot_z = if lr > 0.0 {-90.0} else {90.0};
-    PostureModule::set_rot(weapon.module_accessor, &Vector3f{x: 0.0, y: rot_y, z: rot_z}, 0);
     let rot_y = PostureModule::rot_y(weapon.module_accessor, 0);
     let rot_z = if lr > 0.0 {-90.0} else {90.0};
     PostureModule::set_rot(weapon.module_accessor, &Vector3f{x: 0.0, y: rot_y, z: rot_z}, 0);
@@ -175,7 +171,6 @@ unsafe extern "C" fn fly_burst_loop(weapon: &mut smashline::L2CWeaponCommon) -> 
 
 pub fn install() {     
     let agent = &mut smashline::Agent::new("mariod_decoy");
-    agent.set_costume([112, 113, 114, 115, 116, 117, 118, 119].to_vec());
     agent.set_costume([112, 113, 114, 115, 116, 117, 118, 119].to_vec());
     agent.acmd("game_fly", game_fly, Priority::Default);
     agent.acmd("effect_fly", effect_fly, Priority::Default);

@@ -175,7 +175,6 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
 
-    // Spin multihits from frame 6 to 20
     for i in (6..40).step_by(3) {
         frame(agent.lua_state_agent, i as f32);
         if macros::is_excute(agent) {
@@ -188,10 +187,9 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
         }
     }
 
-    // Final strong hit (frame 20)
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 75, 100, 0, 80, 11.0, 0.0, 6.8, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 35, 100, 0, 80, 11.0, 0.0, 6.8, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
     }
 
     frame(agent.lua_state_agent, 45.0);
@@ -201,8 +199,15 @@ unsafe extern "C" fn game_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn effect_attacklw4(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("toel"), 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    for &f in &[2.0, 22.0] {
+        frame(agent.lua_state_agent, f);
+        if macros::is_excute(agent) {
+            for _ in 0..2 {
+                macros::EFFECT_FOLLOW(agent, Hash40::new("sys_spin_wind"), Hash40::new("top"), 0.0, 9.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
+                macros::LAST_EFFECT_SET_ALPHA(agent, 0.55);
+                macros::LAST_EFFECT_SET_RATE(agent, 0.65);
+            }
+        }
     }
 }
 
